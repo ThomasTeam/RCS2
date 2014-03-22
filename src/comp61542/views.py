@@ -113,6 +113,16 @@ def postSearchPage(query):
         args["data"] = db.search_author_by_name(request.form['search'],request.form['sort'], request.form['name'])
     return render_template('search_details.html', args=args)     
 
+@app.route("/ranking/<query>")
+def rankingAuthors(query):
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    args = {"dataset":dataset, "id":query}
+    args["title"] = "author ranking"
+    args["header"] = ["author", "number of papers"]
+    args["data"] = db.rank_author_by_contribution()  #first or manager
+    return render_template('author_ranking.html', args=args)   
+
 @app.route("/statisticsdetails/<status>")
 def showPublicationSummary(status):
     dataset = app.config['DATASET']

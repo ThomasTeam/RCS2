@@ -1,4 +1,5 @@
 from comp61542.statistics import average
+from collections import OrderedDict
 import itertools
 import numpy as np
 from xml.sax import handler, make_parser, SAXException
@@ -7,10 +8,10 @@ PublicationType = [
     "Conference Paper", "Journal", "Book", "Book Chapter"]
 
 class Publication:
-    CONFERENCE_PAPER = 0    #inproceeding
-    JOURNAL = 1     #article
-    BOOK = 2    #book    
-    BOOK_CHAPTER = 3    #incollection
+    CONFERENCE_PAPER = 0  # inproceeding
+    JOURNAL = 1  # article
+    BOOK = 2  # book    
+    BOOK_CHAPTER = 3  # incollection
 
     def __init__(self, pub_type, title, year, authors):
         self.pub_type = pub_type
@@ -61,7 +62,7 @@ class Database:
         return valid
     
     def search_author_by_name(self, author, sort="1", namepart="1"):
-        resultList=[]
+        resultList = []
         for authorKey in self.author_idx:
             if namepart == "1":
                 if authorKey.find(author) != -1:
@@ -71,10 +72,10 @@ class Database:
                 if namepart == "2":
                     if authorNameList[0].find(author) != -1:
                         resultList.append(authorKey)
-                elif authorNameList[len(authorNameList)-1].find(author) != -1:
+                elif authorNameList[len(authorNameList) - 1].find(author) != -1:
                     resultList.append(authorKey)
                     
-        return sorted(resultList,reverse = sort=="2")
+        return sorted(resultList, reverse=sort == "2")
          
     def get_all_authors(self):
         return self.author_idx.keys()
@@ -186,6 +187,28 @@ class Database:
                 + [ func(pub_per_auth[:, i]) for i in np.arange(4) ]
                 + [ func(pub_per_auth.sum(axis=1)) ] ]
         return (header, data)
+
+    def rank_author_by_contribution(self, kind_of_contribution="1", rank="1"):
+        returnResult = {}
+        d = {}
+        X = []
+        for p in self.publications:
+            if kind_of_contribution == "1":
+                X.append(p.authors[0])
+            else:
+                X.append(p.authors[len(p.authors) - 1]) 
+  
+        for item in X:
+            if d.has_key(item):
+                d[item] += 1
+            else:
+                d[item] = 1
+        # cc = sorted(d, key=d.get, reverse=(rank=="1"))
+        for c in d:
+            returnResult[self.authors[c].name]= d[c]
+            
+        return OrderedDict(sorted(returnResult.items(), key=lambda t:t[1],reverse = rank=="1"))
+        
 
     def get_publication_summary(self):
         header = ("Details", "Conference Paper",
