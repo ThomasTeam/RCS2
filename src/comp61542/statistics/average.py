@@ -27,7 +27,7 @@ def mode(X):            #return the most occurred element
         else:
             d[item] = 1
 
-    m = []#(0, 0)
+    m = []
     mostFrequent=0
     for key in d.keys():
         if d[key]>mostFrequent:
@@ -36,9 +36,8 @@ def mode(X):            #return the most occurred element
             mostFrequent=d[key]
         elif d[key]==mostFrequent:
             m.append(key)
-            #m[m.length]=key
     return m
-    
+    #m = (0, 0)
     #for key in d.keys():
     #    if d[key] > m[0]:
     #        m = {}

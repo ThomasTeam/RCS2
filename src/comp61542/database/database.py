@@ -60,13 +60,22 @@ class Database:
 
         return valid
     
-    def search_author_by_name(self, author):
+    def search_author_by_name(self, author, sort="1", namepart="1"):
         resultList=[]
         for authorKey in self.author_idx:
-            if ~(authorKey.find(author)):
-                resultList.append(authorKey)
-        return resultList
-        
+            if namepart == "1":
+                if authorKey.find(author) != -1:
+                    resultList.append(authorKey)
+            else:
+                authorNameList = authorKey.split()
+                if namepart == "2":
+                    if authorNameList[0].find(author) != -1:
+                        resultList.append(authorKey)
+                elif authorNameList[len(authorNameList)-1].find(author) != -1:
+                    resultList.append(authorKey)
+                    
+        return sorted(resultList,reverse = sort=="2")
+         
     def get_all_authors(self):
         return self.author_idx.keys()
 

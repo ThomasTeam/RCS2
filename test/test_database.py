@@ -159,6 +159,12 @@ class TestDatabase(unittest.TestCase):
             "incorrect year in result")
         self.assertEqual(data[0][1], 2,
             "incorrect number of authors in result")
+        
+    def test_serch_author_by_name(self):
+        db = database.Database()
+        db.read(path.join(self.data_dir, "simple.xml"))
+        #data = db.search_author_by_name("author1")
+        print db.search_author_by_name("author1")
 
 if __name__ == '__main__':
     unittest.main()

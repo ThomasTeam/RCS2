@@ -110,7 +110,7 @@ def postSearchPage(query):
     args = {"dataset":dataset, "id":query}
     if query == "by_author":
         args["title"] = "search author by name"
-        args["data"] = db.search_author_by_name(request.form['search'])
+        args["data"] = db.search_author_by_name(request.form['search'],request.form['sort'], request.form['name'])
     return render_template('search_details.html', args=args)     
 
 @app.route("/statisticsdetails/<status>")

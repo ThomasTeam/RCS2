@@ -3,7 +3,17 @@
 {% block content %}
 <h1>{{ args.title }}</h1>
 <form method="post">
-Enter the name of the AUTHOR : <input type="text" id="search" name="search"/> <input type="submit"/>
+Enter the name of the AUTHOR : <input type="text" id="search" name="search"/> 
+<select id="sort" name="sort">
+	<option value="1" selected> Ascending </option>
+	<option value="2"> Descending </option>
+</select>
+<select id="name" name="name">
+	<option value="1" selected> Whole Name </option>
+	<option value="2"> First Name </option>
+	<option value="3"> Last Name </option>
+</select>
+<input type="submit"/>
 </form>
 {% if args.data %}
 <table>
