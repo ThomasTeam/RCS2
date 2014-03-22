@@ -7,10 +7,10 @@ PublicationType = [
     "Conference Paper", "Journal", "Book", "Book Chapter"]
 
 class Publication:
-    CONFERENCE_PAPER = 0
-    JOURNAL = 1
-    BOOK = 2
-    BOOK_CHAPTER = 3
+    CONFERENCE_PAPER = 0    #inproceeding
+    JOURNAL = 1     #article
+    BOOK = 2    #book    
+    BOOK_CHAPTER = 3    #incollection
 
     def __init__(self, pub_type, title, year, authors):
         self.pub_type = pub_type
@@ -59,7 +59,12 @@ class Database:
                 self.max_year = p.year
 
         return valid
-
+    
+    def search_author_by_name(self, author):
+        for authorKey in self.author_idx:
+            if ~(authorKey.find(author)):
+                print authorKey
+        
     def get_all_authors(self):
         return self.author_idx.keys()
 
