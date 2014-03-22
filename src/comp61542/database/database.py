@@ -61,9 +61,11 @@ class Database:
         return valid
     
     def search_author_by_name(self, author):
+        resultList=[]
         for authorKey in self.author_idx:
             if ~(authorKey.find(author)):
-                print authorKey
+                resultList.append(authorKey)
+        return resultList
         
     def get_all_authors(self):
         return self.author_idx.keys()

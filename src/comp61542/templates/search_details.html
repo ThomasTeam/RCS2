@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ args.title }}{% endblock %}
+{% block content %}
+<h1>{{ args.title }}</h1>
+<form method="post">
+Enter the name of the AUTHOR : <input type="text" id="search" name="search"/> <input type="submit"/>
+</form>
+{% if args.data %}
+<table>
+  <thead>
+    <tr>
+        <th>Author</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for author in args.data %}  
+      <tr>
+          <td>{{ author }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br/>
+
+{% endif %}
+
+{% endblock %}

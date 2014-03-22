@@ -54,6 +54,7 @@ def showAverages():
                 + format_data(db.get_average_authors_in_a_year(i)[1])
                 for i in averages ] })
 
+
     args['tables'] = tables
     return render_template("averages.html", args=args)
 
@@ -93,6 +94,24 @@ def showStatisticsMenu():
     dataset = app.config['DATASET']
     args = {"dataset":dataset}
     return render_template('statistics.html', args=args)
+
+@app.route("/search/<query>")
+def getSearchPage(query):
+    dataset = app.config['DATASET']
+    args = {"dataset":dataset, "id":query}
+    if query == "by_author":
+        args["title"] = "search author by name"
+    return render_template('search_details.html', args=args)  
+
+@app.route("/search/<query>", methods = ['POST'])
+def postSearchPage(query):
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    args = {"dataset":dataset, "id":query}
+    if query == "by_author":
+        args["title"] = "search author by name"
+        args["data"] = db.search_author_by_name(request.form['search'])
+    return render_template('search_details.html', args=args)     
 
 @app.route("/statisticsdetails/<status>")
 def showPublicationSummary(status):
