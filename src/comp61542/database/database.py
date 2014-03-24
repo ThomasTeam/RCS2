@@ -61,23 +61,56 @@ class Database:
 
         return valid
     
-    def search_author_by_name(self, author, sort="1", namepart="1"):
-        resultList = []
-        for authorKey in self.author_idx:
+    def search_author_by_name(self, author, sort="1,1", namepart="1"):
+        (header,data) = self.get_publications_by_author()
+        cloneData = data[:]
+        index = 0
+        for authorKey in data:
             if namepart == "1":
-                if authorKey.find(author) != -1:
-                    resultList.append(authorKey)
+                if authorKey[0].find(author) == -1:
+                    del cloneData[index]
+                    continue
             else:
-                authorNameList = authorKey.split()
+                authorNameList = authorKey[0].split()
                 if namepart == "2":
-                    if authorNameList[0].find(author) != -1:
-                        resultList.append(authorKey)
-                elif authorNameList[len(authorNameList) - 1].find(author) != -1:
-                    resultList.append(authorKey)
-                    
-        return sorted(resultList, reverse=sort == "2")
+                    if authorNameList[0].find(author) == -1:
+                        del cloneData[index]
+                        continue
+                elif authorNameList[len(authorNameList) - 1].find(author) == -1: 
+                    del cloneData[index]
+                    continue   
+            index = index + 1
+#       resultList = []
+#         for authorKey in self.author_idx:
+#             if namepart == "1":
+#                 if authorKey.find(author) != -1:
+#                     resultList.append(authorKey)
+#             else:
+#                 authorNameList = authorKey.split()
+#                 if namepart == "2":
+#                     if authorNameList[0].find(author) != -1:
+#                         resultList.append(authorKey)
+#                 elif authorNameList[len(authorNameList) - 1].find(author) != -1:
+#                     resultList.append(authorKey)
+
+        coauthors = {}
+        for p in self.publications:
+            for a in p.authors:
+                for a2 in p.authors:
+                    if a != a2:
+                        try:
+                            coauthors[a].add(a2)
+                        except KeyError:
+                            coauthors[a] = set([a2])
+        for c in cloneData:
+            c.append(len(coauthors[self.author_idx.get(c[0])]))
+            #print "sss",coauthors[[k for k, v in self.author_idx.iteritems() if v == c[0]][0]]
+            #c.append(len(coauthors[[k for k, v in self.author_idx.iteritems() if v == c[0]][0]]))
+        
+        sortValues = sort.split(",")            
+        return sorted(cloneData,key = lambda row : row[int(sortValues[0])], reverse= sortValues[1] == "2")
          
-    def get_all_authors(self):
+    def get_all_authors(self):  
         return self.author_idx.keys()
 
     def get_coauthor_data(self, start_year, end_year, pub_type):

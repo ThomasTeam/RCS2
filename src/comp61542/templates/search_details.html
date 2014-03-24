@@ -2,12 +2,14 @@
 {% block title %}{{ args.title }}{% endblock %}
 {% block content %}
 <h1>{{ args.title }}</h1>
-<form method="post">
+<form id="Form1" method="post">
 Enter the name of the AUTHOR : <input type="text" id="search" name="search"/> 
-<select id="sort" name="sort">
+<!--<select id="sort" name="sort">
 	<option value="1" selected> Ascending </option>
 	<option value="2"> Descending </option>
 </select>
+-->
+<input type="hidden" name="sort" id="sort" value="0,1"/>
 <select id="name" name="name">
 	<option value="1" selected> Whole Name </option>
 	<option value="2"> First Name </option>
@@ -16,22 +18,53 @@ Enter the name of the AUTHOR : <input type="text" id="search" name="search"/>
 <input type="submit"/>
 </form>
 {% if args.data %}
+Searching for : {{ args.search }}
 <table>
   <thead>
     <tr>
-        <th>Author</th>
+        <th>Author <input type="button" value="U" onclick="sort('0,1')"/> <input type="button"  value="D" onclick="sort('0,2')"/></th>
+        <th>Number of conference papers <input type="button"  value="U" onclick="sort('1,1')"/> <input type="button"  value="D" onclick="sort('1,2')"/></th>
+        <th>Number of journal articles <input type="button" value="U" onclick="sort('2,1')"/> <input type="button"  value="D" onclick="sort('2,2')"/></th>
+        <th>Number of book chapters <input type="button" value="U" onclick="sort('3,1')"/> <input type="button"  value="D" onclick="sort('3,2')"/></th>
+        <th>Number of books <input type="button" value="U" onclick="sort('4,1')"/> <input type="button"  value="D" onclick="sort('4,2')"/></th>
+        <th>Number of publication <input type="button" value="U" onclick="sort('5,1')"/> <input type="button"  value="D" onclick="sort('5,2')"/></th>
+        <th>Number of co-authors <input type="button" value="U" onclick="sort('6,1')"/> <input type="button"  value="D" onclick="sort('6,2')"/></th>
     </tr>
   </thead>
   <tbody>
-    {% for author in args.data %}  
+    {% for entry in args.data %}  
       <tr>
-          <td>{{ author }}</td>
+     	<td align="center">{{ entry[0] }}</td>
+     	<td align="center">{{ entry[1] }}</td>
+     	<td align="center">{{ entry[2] }}</td>
+     	<td align="center">{{ entry[3] }}</td>
+     	<td align="center">{{ entry[4] }}</td>
+     	<td align="center">{{ entry[5] }}</td>
+     	<td align="center">{{ entry[6] }}</td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
 <br/>
 
+
+
+<input type="hidden" id="searchtext" value="{{args.search}}"/>
+<input type="hidden" id="sorttext" value="{{args.sort}}"/>
+<input type="hidden" id="nametext" value="{{args.name}}"/>
+
+
+
 {% endif %}
+
+<script>
+	function sort(type){
+		alert(type)
+		document.getElementById("search").value = document.getElementById("searchtext").value;
+		document.getElementById("sort").value = document.getElementById("sorttext").value = type;
+		document.getElementById("name").selectedIndex = parseInt(document.getElementById("nametext").value) -1;
+		document.getElementById("Form1").submit();
+	}
+</script>
 
 {% endblock %}
