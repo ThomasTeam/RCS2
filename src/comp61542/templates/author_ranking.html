@@ -6,20 +6,32 @@
 <table>
   <thead>
     <tr>
-      {% for column in args.header %}
-        <th>{{ column }}</th>
-      {% endfor %}
+        <th>Authors </th>
+        <th>First Author <input type="button" value="U" onclick="sort('0,1')"/> <input type="button"  value="D" onclick="sort('0,2')"/></th>
+        <th>Last Author <input type="button" value="U" onclick="sort('1,1')"/> <input type="button"  value="D" onclick="sort('1,2')"/></th>
     </tr>
   </thead>
   <tbody>
     {% for row in args.data %}    
       <tr>
           <td>{{ row }}</td>
-          <td>{{ args.data[row] }}</td>
+          <td>{{ args.data[row][0] }}</td>
+          <td>{{ args.data[row][1] }}</td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
 <br/>
+
+<form id="Form1" method="post">
+<input type="hidden" id="sort" value="{{args.sort}}"/>
+</form>
+
+<script>
+	function sort(type){
+		document.getElementById("sort").value = type;
+		document.getElementById("Form1").submit();
+	}
+</script>
 
 {% endblock %}

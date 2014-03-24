@@ -119,9 +119,21 @@ def rankingAuthors(query):
     db = app.config['DATABASE']
     args = {"dataset":dataset, "id":query}
     args["title"] = "author ranking"
-    args["header"] = ["author", "number of papers"]
+    args["header"] = ["Author", "First Author", "Last Author"]
     args["data"] = db.rank_author_by_contribution()  #first or manager
-    return render_template('author_ranking.html', args=args)   
+    args["sort"] = "0,1"
+    return render_template('author_ranking.html', args=args)  
+
+@app.route("/ranking/<query>", methods = ['POST'])
+def poatRankingAuthors(query):
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    args = {"dataset":dataset, "id":query}
+    args["title"] = "author ranking"
+    args["header"] = ["Author", "First Author", "Last Author"]
+    args["data"] = db.rank_author_by_contribution()  #first or manager
+    args["sort"] = request.form['sort']
+    return render_template('author_ranking.html', args=args)  
 
 @app.route("/statisticsdetails/<status>")
 def showPublicationSummary(status):

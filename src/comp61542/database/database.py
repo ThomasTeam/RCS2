@@ -221,26 +221,33 @@ class Database:
                 + [ func(pub_per_auth.sum(axis=1)) ] ]
         return (header, data)
 
-    def rank_author_by_contribution(self, kind_of_contribution="1", rank="1"):
+    def rank_author_by_contribution(self, rank="0,1"):
         returnResult = {}
         d = {}
-        X = []
+        FirstAuthor = []
+        LastAuthor = []
         for p in self.publications:
-            if kind_of_contribution == "1":
-                X.append(p.authors[0])
-            else:
-                X.append(p.authors[len(p.authors) - 1]) 
+                FirstAuthor.append(p.authors[0])
+                LastAuthor.append(p.authors[len(p.authors) - 1]) 
   
-        for item in X:
+        for item in FirstAuthor:
             if d.has_key(item):
-                d[item] += 1
+                d[item][0] += 1
             else:
-                d[item] = 1
+                d[item] = [1,0]
+                
+        for item in LastAuthor:
+            if d.has_key(item):
+                d[item][1] += 1
+            else: 
+                d[item] = [0,1]
         # cc = sorted(d, key=d.get, reverse=(rank=="1"))
         for c in d:
             returnResult[self.authors[c].name]= d[c]
+        
+        rankValues = rank.split(",")
             
-        return OrderedDict(sorted(returnResult.items(), key=lambda t:t[1],reverse = rank=="1"))
+        return OrderedDict(sorted(returnResult.items(), key=lambda t:t[1][int(rankValues[0])],reverse = rank==rankValues[1]))
         
 
     def get_publication_summary(self):
