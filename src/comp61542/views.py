@@ -107,7 +107,7 @@ def getSearchPage(query):
 def postSearchPage(query):
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
-    args = {"dataset":dataset, "id":query, "search":request.form['search'],"sort":request.form['sort'], "name":request.form['name']}
+    args = {"dataset":dataset, "id":query}
     if query == "by_author":
         args["title"] = "search author by name"
         args["data"] = db.search_author_by_name(request.form['search'],request.form['sort'], request.form['name'])
