@@ -17,6 +17,11 @@ Enter the name of the AUTHOR : <input type="text" id="search" name="search"/>
 </select>
 <input type="submit"/>
 </form>
+{% if args.method == "POST" %}
+{% if not args.data %}
+No Result Return for this search "{{ args.search }}"
+{% endif %}
+{% endif %}
 {% if args.data %}
 Result for : {% if args.search %} "{{ args.search }}" {% else %} All Authors {% endif %}
 {% if args.name == "1" %}

@@ -97,17 +97,21 @@ def showStatisticsMenu():
 
 @app.route("/search/<query>")
 def getSearchPage(query):
+    
     dataset = app.config['DATASET']
     args = {"dataset":dataset, "id":query}
+    args["method"] = "GET"
     if query == "by_author":
         args["title"] = "Search author by name"
     return render_template('search_details.html', args=args)  
 
 @app.route("/search/<query>", methods = ['POST'])
 def postSearchPage(query):
+    
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
     args = {"dataset":dataset, "id":query, "search":request.form['search'],"sort":request.form['sort'], "name":request.form['name']}
+    args["method"] = "POST"
     if query == "by_author":
         args["title"] = "Search by author name"
         args["data"] = db.search_author_by_name(request.form['search'],request.form['sort'], request.form['name'])
