@@ -10,30 +10,32 @@ class TestDatabase(unittest.TestCase):
         self.data_dir = path.join(dir, "..", "data")
 
         
-    def test_serch_author_by_name_using_full_name(self):
+    def test_rank_author_by_contribution_top_one(self):
         db = database.Database()
         db.read(path.join(self.data_dir, "dblp_curated_sample.xml"))
         #data = db.search_author_by_name("author1")
-        self.assertEqual(db.search_author_by_name("Sara Camai"),[("Sara Camai",15,9,6,0,0,20)])
-        
-    def test_serch_author_by_name_using_part_name(self):
+        d = db.rank_author_by_contribution()
+        for author in d:
+           f = d[author][0]
+           l = d[author][1] 
+           self.assertEqual(author,"Stefano Ceri")
+           self.assertEqual(f,86)
+           self.assertEqual(l,33)
+           break
+       
+    def test_rank_author_by_contribution_less_one(self):
         db = database.Database()
         db.read(path.join(self.data_dir, "dblp_curated_sample.xml"))
         #data = db.search_author_by_name("author1")
-        self.assertEqual(db.search_author_by_name("Carl"),[("Carl Kesselman",2,2,0,0,0,2),("Carlo Batini",10,6,2,0,1),("Carlo Conserva",8,8,0,0,0,10),("Carlo Siciliano",2,2,0,0,0,2),("Carlo Zaniolo",1,0,0,0,0,5),("Carlos Eduardo Scheidegger",1,0,1,0,0,45),("Carlos N. Cumberbatch",1,1,0,0,0,2)])
-    
-    def test_serch_author_by_name_usng_first_name(self):
-        db = database.Database()
-        db.read(path.join(self.data_dir, "dblp_curated_sample.xml"))
-        #data = db.search_author_by_name("author1")
-        self.assertEqual(db.search_author_by_name("Steffen","1","2"),[("Steffen Mller",1,0,1,0,0,9)])
-    
-    def test_serch_author_by_name_usng_last_name(self):
-        db = database.Database()
-        db.read(path.join(self.data_dir, "dblp_curated_sample.xml"))
-        #data = db.search_author_by_name("author1")
-        self.assertEqual(db.search_author_by_name("Steffen","1","3"),[("Bernhard Steffen",1,1,0,0,0,9)])   
-         
+        d = db.rank_author_by_contribution("0,1")
+        for author in d:
+           f = d[author][0]
+           l = d[author][1] 
+           self.assertEqual(author,"Neha Patel")
+           self.assertEqual(f,0)
+           self.assertEqual(l,1)
+           break   
+   
         
 if __name__ == '__main__':
     unittest.main()
