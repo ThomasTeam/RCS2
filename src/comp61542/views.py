@@ -100,7 +100,7 @@ def getSearchPage(query):
     dataset = app.config['DATASET']
     args = {"dataset":dataset, "id":query}
     if query == "by_author":
-        args["title"] = "search author by name"
+        args["title"] = "Search author by name"
     return render_template('search_details.html', args=args)  
 
 @app.route("/search/<query>", methods = ['POST'])
@@ -109,7 +109,7 @@ def postSearchPage(query):
     db = app.config['DATABASE']
     args = {"dataset":dataset, "id":query, "search":request.form['search'],"sort":request.form['sort'], "name":request.form['name']}
     if query == "by_author":
-        args["title"] = "search author by name"
+        args["title"] = "Search by author name"
         args["data"] = db.search_author_by_name(request.form['search'],request.form['sort'], request.form['name'])
     return render_template('search_details.html', args=args)     
 
@@ -117,11 +117,10 @@ def postSearchPage(query):
 def rankingAuthors(query):
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
-    args = {"dataset":dataset, "id":query}
-    args["title"] = "author ranking"
+    args = {"dataset":dataset, "id":query, "sort":"0,2"}
+    args["title"] = "Author Ranking"
     args["header"] = ["Author", "First Author", "Last Author"]
-    args["data"] = db.rank_author_by_contribution()  #first or manager
-    args["sort"] = "0,1"
+    args["data"] = db.rank_author_by_contribution( )  #first or manager
     return render_template('author_ranking.html', args=args)  
 
 @app.route("/ranking/<query>", methods = ['POST'])
@@ -129,9 +128,9 @@ def poatRankingAuthors(query):
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
     args = {"dataset":dataset, "id":query}
-    args["title"] = "author ranking"
+    args["title"] = "Author Ranking"
     args["header"] = ["Author", "First Author", "Last Author"]
-    args["data"] = db.rank_author_by_contribution()  #first or manager
+    args["data"] = db.rank_author_by_contribution(request.form["sort"])  #first or manager
     args["sort"] = request.form['sort']
     return render_template('author_ranking.html', args=args)  
 

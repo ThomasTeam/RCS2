@@ -67,16 +67,16 @@ class Database:
         index = 0
         for authorKey in data:
             if namepart == "1":
-                if authorKey[0].find(author) == -1:
+                if authorKey[0].lower().find(author.lower()) == -1:
                     del cloneData[index]
                     continue
             else:
                 authorNameList = authorKey[0].split()
                 if namepart == "2":
-                    if authorNameList[0].find(author) == -1:
+                    if authorNameList[0].lower().find(author.lower()) == -1:
                         del cloneData[index]
                         continue
-                elif authorNameList[len(authorNameList) - 1].find(author) == -1: 
+                elif authorNameList[len(authorNameList) - 1].lower().find(author.lower()) == -1: 
                     del cloneData[index]
                     continue   
             index = index + 1
@@ -107,8 +107,11 @@ class Database:
             #print "sss",coauthors[[k for k, v in self.author_idx.iteritems() if v == c[0]][0]]
             #c.append(len(coauthors[[k for k, v in self.author_idx.iteritems() if v == c[0]][0]]))
         
-        sortValues = sort.split(",")            
-        return sorted(cloneData,key = lambda row : row[int(sortValues[0])], reverse= sortValues[1] == "2")
+        sortValues = sort.split(",")          
+        if sortValues[0] == "0": 
+            return sorted(cloneData,key = lambda row : row[int(sortValues[0])].lower(), reverse= sortValues[1] == "2")
+        else:
+            return sorted(cloneData,key = lambda row : row[int(sortValues[0])], reverse= sortValues[1] == "2")
          
     def get_all_authors(self):  
         return self.author_idx.keys()
@@ -221,7 +224,7 @@ class Database:
                 + [ func(pub_per_auth.sum(axis=1)) ] ]
         return (header, data)
 
-    def rank_author_by_contribution(self, rank="0,1"):
+    def rank_author_by_contribution(self, rank="0,2"):
         returnResult = {}
         d = {}
         FirstAuthor = []
@@ -247,7 +250,7 @@ class Database:
         
         rankValues = rank.split(",")
             
-        return OrderedDict(sorted(returnResult.items(), key=lambda t:t[1][int(rankValues[0])],reverse = rank==rankValues[1]))
+        return OrderedDict(sorted(returnResult.items(), key=lambda t:t[1][int(rankValues[0])],reverse = rankValues[1] == "2"))
         
 
     def get_publication_summary(self):

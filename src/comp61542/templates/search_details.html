@@ -18,23 +18,52 @@ Enter the name of the AUTHOR : <input type="text" id="search" name="search"/>
 <input type="submit"/>
 </form>
 {% if args.data %}
-Searching for : {{ args.search }}
-<table>
+Result for : {% if args.search %} "{{ args.search }}" {% else %} All Authors {% endif %}
+{% if args.name == "1" %}
+in Whole Name
+{% elif args.name == "2" %}
+in First Name
+{% else %}
+in Last Name
+{% endif %}
+ - 
+Order By : 
+{% if args.sort.split(',')[0] == "0" %}
+Author {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc {% endif %}
+{% elif args.sort.split(',')[0] == "1" %}
+Number of conference papers {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc {% endif %}
+{% elif args.sort.split(',')[0] == "2" %}
+Number of journal articles {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc {% endif %}
+{% elif args.sort.split(',')[0] == "3" %}
+Number of book chapters {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc {% endif %}
+{% elif args.sort.split(',')[0] == "4" %}
+Number of books {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc {% endif %}
+{% elif args.sort.split(',')[0] == "5" %}
+Number of publication {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc {% endif %}
+{% elif args.sort.split(',')[0] == "6" %}
+Number of co-authors {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc {% endif %}
+{% endif %}
+
+<br />
+<br />
+<table border="1">
   <thead>
     <tr>
-        <th>Author <input type="button" value="U" onclick="sort('0,1')"/> <input type="button"  value="D" onclick="sort('0,2')"/></th>
-        <th>Number of conference papers <input type="button"  value="U" onclick="sort('1,1')"/> <input type="button"  value="D" onclick="sort('1,2')"/></th>
-        <th>Number of journal articles <input type="button" value="U" onclick="sort('2,1')"/> <input type="button"  value="D" onclick="sort('2,2')"/></th>
-        <th>Number of book chapters <input type="button" value="U" onclick="sort('3,1')"/> <input type="button"  value="D" onclick="sort('3,2')"/></th>
-        <th>Number of books <input type="button" value="U" onclick="sort('4,1')"/> <input type="button"  value="D" onclick="sort('4,2')"/></th>
-        <th>Number of publication <input type="button" value="U" onclick="sort('5,1')"/> <input type="button"  value="D" onclick="sort('5,2')"/></th>
-        <th>Number of co-authors <input type="button" value="U" onclick="sort('6,1')"/> <input type="button"  value="D" onclick="sort('6,2')"/></th>
+        <th>#</th>
+        <th  style="width: 250px;">Author <input type="button" value="U" onclick="sort('0,1')"/> <input type="button"  value="D" onclick="sort('0,2')"/></th>
+        <th style="width: 150px;">Number of conference papers <input type="button"  value="U" onclick="sort('1,1')"/> <input type="button"  value="D" onclick="sort('1,2')"/></th>
+        <th style="width: 150px;">Number of journal articles <input type="button" value="U" onclick="sort('2,1')"/> <input type="button"  value="D" onclick="sort('2,2')"/></th>
+        <th style="width: 150px;">Number of book chapters <input type="button" value="U" onclick="sort('3,1')"/> <input type="button"  value="D" onclick="sort('3,2')"/></th>
+        <th style="width: 150px;">Number of books <input type="button" value="U" onclick="sort('4,1')"/> <input type="button"  value="D" onclick="sort('4,2')"/></th>
+        <th style="width: 150px;">Number of publication <input type="button" value="U" onclick="sort('5,1')"/> <input type="button"  value="D" onclick="sort('5,2')"/></th>
+        <th style="width: 150px;">Number of co-authors <input type="button" value="U" onclick="sort('6,1')"/> <input type="button"  value="D" onclick="sort('6,2')"/></th>
     </tr>
   </thead>
   <tbody>
     {% for entry in args.data %}  
       <tr>
-     	<td align="center">{{ entry[0] }}</td>
+        <td>{{loop.index}}</td>
+     	<td>{{ entry[0] }}</td>
      	<td align="center">{{ entry[1] }}</td>
      	<td align="center">{{ entry[2] }}</td>
      	<td align="center">{{ entry[3] }}</td>
@@ -59,7 +88,6 @@ Searching for : {{ args.search }}
 
 <script>
 	function sort(type){
-		alert(type)
 		document.getElementById("search").value = document.getElementById("searchtext").value;
 		document.getElementById("sort").value = document.getElementById("sorttext").value = type;
 		document.getElementById("name").selectedIndex = parseInt(document.getElementById("nametext").value) -1;
