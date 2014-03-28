@@ -108,10 +108,15 @@ class Database:
             #c.append(len(coauthors[[k for k, v in self.author_idx.iteritems() if v == c[0]][0]]))
         
         sortValues = sort.split(",")          
+        #if sortValues[0] == "0": 
+        #    return sorted(cloneData,key = lambda row : row[int(sortValues[0])].lower(), reverse= sortValues[1] == "2")
+        #else:
+        #    return sorted(cloneData,key = lambda row : (row[int(sortValues[0])],row[0].lower()) , reverse= sortValues[1] == "2")
         if sortValues[0] == "0": 
-            return sorted(cloneData,key = lambda row : row[int(sortValues[0])].lower(), reverse= sortValues[1] == "2")
+            return sorted(cloneData,key = lambda row : row[0].lower(), reverse= sortValues[1] == "2")
         else:
-            return sorted(cloneData,key = lambda row : row[int(sortValues[0])], reverse= sortValues[1] == "2")
+            sortedData = sorted(cloneData,key = lambda row : row[0].lower())
+            return sorted(sortedData,key = lambda row : row[int(sortValues[0])], reverse= sortValues[1] == "2")
          
     def get_all_authors(self):  
         return self.author_idx.keys()
