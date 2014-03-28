@@ -31,7 +31,7 @@ class TestDatabase(unittest.TestCase):
         for author in d:
            f = d[author][0]
            l = d[author][1] 
-           self.assertEqual(author,"Neha Patel")
+           self.assertEqual(author,"A. Patrick")
            self.assertEqual(f,0)
            self.assertEqual(l,1)
            break   
