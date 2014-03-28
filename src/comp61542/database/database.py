@@ -1,5 +1,6 @@
 from comp61542.statistics import average
 from collections import OrderedDict
+import operator
 import itertools
 import numpy as np
 from xml.sax import handler, make_parser, SAXException
@@ -254,8 +255,8 @@ class Database:
             returnResult[self.authors[c].name]= d[c]
         
         rankValues = rank.split(",")
-            
-        return OrderedDict(sorted(returnResult.items(), key=lambda t:t[1][int(rankValues[0])],reverse = rankValues[1] == "2"))
+        sorted_x = OrderedDict(sorted(returnResult.items(), key=lambda t:t[0]))
+        return OrderedDict(sorted(sorted_x.items(), key=lambda t:t[1][int(rankValues[0])],reverse = rankValues[1] == "2"))
         
 
     def get_publication_summary(self):
