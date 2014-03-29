@@ -134,7 +134,8 @@ def poatRankingAuthors(query):
     args = {"dataset":dataset, "id":query, "query":request.form["search"], "publication":request.form["pub"]}
     args["title"] = "Author Ranking"
     args["header"] = ["Author", "First Author", "Last Author"]
-    args["data"] = db.rank_author_by_contribution(request.form["search"],request.form["sort"],request.form["pub"])  #first or manager
+    args["data"] = db.rank_author_by_contribution(request.form["search"],request.form["sort"],request.form["pub"])
+    #first or manager
     args["sort"] = request.form['sort']
     return render_template('author_ranking.html', args=args)  
 

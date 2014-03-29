@@ -63,7 +63,7 @@ class Database:
         return valid
     
     def search_author_by_name(self, author, sort="1,1", namepart="1"):
-        (header,data) = self.get_publications_by_author()
+        (_,data) = self.get_publications_by_author()
         cloneData = data[:]
         index = 0
         for authorKey in data:
@@ -105,6 +105,7 @@ class Database:
                             coauthors[a] = set([a2])
         for c in cloneData:
             c.append(len(coauthors[self.author_idx.get(c[0])]))
+            c.append(self.author_idx.get(c[0]))
             #print "sss",coauthors[[k for k, v in self.author_idx.iteritems() if v == c[0]][0]]
             #c.append(len(coauthors[[k for k, v in self.author_idx.iteritems() if v == c[0]][0]]))
         
@@ -252,7 +253,7 @@ class Database:
         for p in self.publications:
             if pub == -1 or p.pub_type == pub:
                 if len(p.authors) == 1:
-                    SoleAuthor.append(p.authors[0])
+                    SoleAuthor.append(p.authors[0]) 
                 else:
                     FirstAuthor.append(p.authors[0])
                     LastAuthor.append(p.authors[len(p.authors) - 1]) 
@@ -261,19 +262,19 @@ class Database:
             if d.has_key(item):
                 d[item][0] += 1
             else:
-                d[item] = [1,0,0]
+                d[item] = [1,0,0,item]
                 
         for item in LastAuthor:
             if d.has_key(item):
                 d[item][1] += 1
             else: 
-                d[item] = [0,1,0]
+                d[item] = [0,1,0,item]
 
         for item in SoleAuthor:
             if d.has_key(item):
                 d[item][2] += 1
             else:
-                d[item] = [0,0,1]
+                d[item] = [0,0,1,item]
         # cc = sorted(d, key=d.get, reverse=(rank=="1"))
         #if author != "":
         for c in d:

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}{{ args.title }}{% endblock %}
+{% block content %}
+<h1>{{ args.title }}</h1>
+
+<br />
+<br />
+<table border="1">
+  <thead>
+    <tr>
+        <th  style="width: 250px;">Author </th>
+        <th style="width: 150px;">Number of conference papers </th>
+        <th style="width: 150px;">Number of journal articles </th>
+        <th style="width: 150px;">Number of book chapters </th>
+        <th style="width: 150px;">Number of books </th>
+        <th style="width: 150px;">Number of publication </th>
+        <th style="width: 150px;">Number of co-authors </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% entry = args.data %}  
+      <tr>
+     	<td>{{ entry[0] }}</td>
+     	<td align="center">{{ entry[1] }}</td>
+     	<td align="center">{{ entry[2] }}</td>
+     	<td align="center">{{ entry[3] }}</td>
+     	<td align="center">{{ entry[4] }}</td>
+     	<td align="center">{{ entry[5] }}</td>
+     	<td align="center">{{ entry[6] }}</td>
+      </tr>
+  </tbody>
+</table>
+<br/>
+
+
+
+<input type="hidden" id="searchtext" value="{{args.search}}"/>
+<input type="hidden" id="sorttext" value="{{args.sort}}"/>
+<input type="hidden" id="nametext" value="{{args.name}}"/>
+
+	
+
+<script>
+	function sort(type){
+		document.getElementById("search").value = document.getElementById("searchtext").value;
+		document.getElementById("sort").value = document.getElementById("sorttext").value = type;
+		document.getElementById("name").selectedIndex = parseInt(document.getElementById("nametext").value) -1;
+		document.getElementById("Form1").submit();
+	}
+</script>
+
+{% endblock %}

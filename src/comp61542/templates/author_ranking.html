@@ -35,7 +35,7 @@ Enter the name of the AUTHOR : <input type="text" id="search" name="search" valu
     {% for row in args.data %}    
       <tr>
           <td>{{ loop.index }}</td>
-          <td>{{ row }}</td>
+          <td><a href="{{args.data[row][3]}}">{{ row }}</a></td>
           <td align="center">{{ args.data[row][0] }}</td>
           <td align="center">{{ args.data[row][1] }}</td>
           <td align="center">{{ args.data[row][2] }}</td>
