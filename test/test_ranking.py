@@ -134,8 +134,8 @@ class TestDatabase(unittest.TestCase):
            l = d[author][1] 
            s = d[author][2]
            self.assertEqual(author,"Stefano Ceri")
-           self.assertEqual(f,3)
-           self.assertEqual(l,4)
+           self.assertEqual(f,4)
+           self.assertEqual(l,5)
            self.assertEqual(s,1)
            break    
         
