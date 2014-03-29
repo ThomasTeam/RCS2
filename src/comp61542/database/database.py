@@ -285,9 +285,7 @@ class Database:
                 returnResult[self.authors[c].name]= d[c]
            # else:
            #    returnResult[self.authors[c].name]= d[c]
-        
-
-        
+            
 
         rankValues = rank.split(",")
         sorted_x = OrderedDict(sorted(returnResult.items(), key=lambda t:t[0]))

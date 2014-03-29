@@ -68,7 +68,7 @@ Number of co-authors {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc
     {% for entry in args.data %}  
       <tr>
         <td>{{loop.index}}</td>
-     	<td><a href="{{entry[7]}}">{{ entry[0] }}</a></td>
+     	<td><a href="../stats/blah?id={{entry[7]}}">{{ entry[0] }}</a></td>
      	<td align="center">{{ entry[1] }}</td>
      	<td align="center">{{ entry[2] }}</td>
      	<td align="center">{{ entry[3] }}</td>
