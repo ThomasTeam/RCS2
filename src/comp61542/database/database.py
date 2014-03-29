@@ -230,7 +230,7 @@ class Database:
                 + [ func(pub_per_auth.sum(axis=1)) ] ]
         return (header, data)
 
-    def rank_author_by_contribution(self, rank="0,2"):
+    def rank_author_by_contribution(self, author = "", rank="0,2"):
         returnResult = {}
         d = {}
         FirstAuthor = []
@@ -251,9 +251,19 @@ class Database:
             else: 
                 d[item] = [0,1]
         # cc = sorted(d, key=d.get, reverse=(rank=="1"))
+        #if author != "":
         for c in d:
-            returnResult[self.authors[c].name]= d[c]
+            if not author or author.isspace() or author is None or len(author) == 0:
+                returnResult[self.authors[c].name]= d[c]
+                continue
+            elif self.authors[c].name.lower().find(author.lower()) != -1:
+                returnResult[self.authors[c].name]= d[c]
+           # else:
+           #    returnResult[self.authors[c].name]= d[c]
         
+
+        
+
         rankValues = rank.split(",")
         sorted_x = OrderedDict(sorted(returnResult.items(), key=lambda t:t[0]))
         return OrderedDict(sorted(sorted_x.items(), key=lambda t:t[1][int(rankValues[0])],reverse = rankValues[1] == "2"))

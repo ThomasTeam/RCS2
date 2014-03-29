@@ -2,6 +2,17 @@
 {% block title %}{{ args.title }}{% endblock %}
 {% block content %}
 <h1>{{ args.title }}</h1>
+<form id="Form1" method="post">
+Enter the name of the AUTHOR : <input type="text" id="search" name="search"/> 
+<!--<select id="sort" name="sort">
+	<option value="1" selected> Ascending </option>
+	<option value="2"> Descending </option>
+</select>
+-->
+<input type="hidden" id="sort" name="sort" value="{{ args.sort }}"/>
+<input type="hidden" id="query" name="query" value="{{ args.query }}"/>
+<input type="submit"/>
+</form>
 {% if args.sort.split(',')[0] == "0" %}
 <h2> Sort Author By First Contribution {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc {% endif %}</h2>
 {% else %}
@@ -29,14 +40,9 @@
 </table>
 <br/>
 
-<form id="Form1" method="post">
-<input type="hidden" id="sort" name="sort" value="{{ args.sort }}"/>
-</form>
-
-
 <script>
     function sort(type) {
-    
+        document.getElementById("search").value = document.getElementById("query").value;
 		document.getElementById("sort").value = type;
 		document.getElementById("Form1").submit();
 	}
