@@ -230,19 +230,32 @@ class Database:
                 + [ func(pub_per_auth.sum(axis=1)) ] ]
         return (header, data)
 
-    def rank_author_by_contribution(self, author = "", rank="0,2"):
+    def rank_author_by_contribution(self, author = "", rank="0,2", pub = "0"):
         returnResult = {}
         d = {}
         FirstAuthor = []
         LastAuthor = []
         SoleAuthor = []
 
+        if pub == "0":
+            pub =-1
+        elif pub == "1":
+            pub = 1
+        elif pub == "2":
+            pub = 0
+        elif pub == "3":
+            pub = 2
+        elif pub == "4":
+            pub = 3
+
+
         for p in self.publications:
-            if len(p.authors) == 1:
-                SoleAuthor.append(p.authors[0])
-            else:
-                FirstAuthor.append(p.authors[0])
-                LastAuthor.append(p.authors[len(p.authors) - 1]) 
+            if pub == -1 or p.pub_type == pub:
+                if len(p.authors) == 1:
+                    SoleAuthor.append(p.authors[0])
+                else:
+                    FirstAuthor.append(p.authors[0])
+                    LastAuthor.append(p.authors[len(p.authors) - 1]) 
   
         for item in FirstAuthor:
             if d.has_key(item):

@@ -3,14 +3,17 @@
 {% block content %}
 <h1>{{ args.title }}</h1>
 <form id="Form1" method="post">
-Enter the name of the AUTHOR : <input type="text" id="search" name="search"/> 
-<!--<select id="sort" name="sort">
-	<option value="1" selected> Ascending </option>
-	<option value="2"> Descending </option>
+Enter the name of the AUTHOR : <input type="text" id="search" name="search" value="{{args.query}}"/> 
+<select id="pub" name="pub">
+	<option value="0" {% if args.publication == "0" %}selected{% endif %}> All Publictaions </option>
+	<option value="1" {% if args.publication == "1" %}selected{% endif %}> Journal Artical </option>
+	<option value="2" {% if args.publication == "2" %}selected{% endif %}> Conference Paper </option>
+    <option value="3" {% if args.publication == "3" %}selected{% endif %}> Book </option>
+    <option value="4" {% if args.publication == "4" %}selected{% endif %}> Book Chapter </option>
 </select>
--->
 <input type="hidden" id="sort" name="sort" value="{{ args.sort }}"/>
 <input type="hidden" id="query" name="query" value="{{ args.query }}"/>
+<input type="hidden" id="publication" name="query" value="{{ args.publication }}"/>
 <input type="submit"/>
 </form>
 {% if args.sort.split(',')[0] == "0" %}
@@ -45,7 +48,8 @@ Enter the name of the AUTHOR : <input type="text" id="search" name="search"/>
 <script>
     function sort(type) {
         document.getElementById("search").value = document.getElementById("query").value;
-		document.getElementById("sort").value = type;
+        document.getElementById("sort").value = type;
+        document.getElementById("pub").selectedIndex = parseInt(document.getElementById("publication").value);
 		document.getElementById("Form1").submit();
 	}
 </script>

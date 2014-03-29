@@ -121,7 +121,7 @@ def postSearchPage(query):
 def rankingAuthors(query):
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
-    args = {"dataset":dataset, "id":query, "sort":"0,2", "query":""}
+    args = {"dataset":dataset, "id":query, "sort":"0,2", "query":"", "publication":"0"}
     args["title"] = "Author Ranking"
     args["header"] = ["Author", "First Author", "Last Author"]
     args["data"] = db.rank_author_by_contribution( )  #first or manager
@@ -131,10 +131,10 @@ def rankingAuthors(query):
 def poatRankingAuthors(query):
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
-    args = {"dataset":dataset, "id":query, "query":request.form["search"]}
+    args = {"dataset":dataset, "id":query, "query":request.form["search"], "publication":request.form["pub"]}
     args["title"] = "Author Ranking"
     args["header"] = ["Author", "First Author", "Last Author"]
-    args["data"] = db.rank_author_by_contribution(request.form["search"],request.form["sort"])  #first or manager
+    args["data"] = db.rank_author_by_contribution(request.form["search"],request.form["sort"],request.form["pub"])  #first or manager
     args["sort"] = request.form['sort']
     return render_template('author_ranking.html', args=args)  
 
