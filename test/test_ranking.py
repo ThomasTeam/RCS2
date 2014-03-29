@@ -34,8 +34,21 @@ class TestDatabase(unittest.TestCase):
            self.assertEqual(author,"A. Patrick")
            self.assertEqual(f,0)
            self.assertEqual(l,1)
-           break   
-   
+           break  
+        
+    def test_rank_author_using_search(self):
+        db = database.Database()
+        db.read(path.join(self.data_dir, "dblp_curated_sample.xml"))
+        #data = db.search_author_by_name("author1")
+        d = db.rank_author_by_contribution("Sean","0,1")
+        for author in d:
+           f = d[author][0]
+           l = d[author][1] 
+           self.assertEqual(author,"Sean Bechhofer")
+           self.assertEqual(f,11)
+           self.assertEqual(l,12)
+           break  
+       
         
 if __name__ == '__main__':
     unittest.main()
