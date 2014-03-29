@@ -25,6 +25,7 @@ Enter the name of the AUTHOR : <input type="text" id="search" name="search"/>
         <th  style="width: 250px;">Authors </th>
         <th>First Author <input type="button" value="U" onclick="sort('0,1')"/> <input type="button"  value="D" onclick="sort('0,2')"/></th>
         <th>Last Author <input type="button" value="U" onclick="sort('1,1')"/> <input type="button"  value="D" onclick="sort('1,2')"/></th>
+        <th>Sole Author <input type="button" value="U" onclick="sort('2,1')"/> <input type="button"  value="D" onclick="sort('2,2')"/></th>
     </tr>
   </thead>
   <tbody>
@@ -34,6 +35,7 @@ Enter the name of the AUTHOR : <input type="text" id="search" name="search"/>
           <td>{{ row }}</td>
           <td align="center">{{ args.data[row][0] }}</td>
           <td align="center">{{ args.data[row][1] }}</td>
+          <td align="center">{{ args.data[row][2] }}</td>
       </tr>
     {% endfor %}
   </tbody>

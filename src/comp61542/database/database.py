@@ -235,7 +235,12 @@ class Database:
         d = {}
         FirstAuthor = []
         LastAuthor = []
+        SoleAuthor = []
+
         for p in self.publications:
+            if len(p.authors) == 1:
+                SoleAuthor.append(p.authors[0])
+            else:
                 FirstAuthor.append(p.authors[0])
                 LastAuthor.append(p.authors[len(p.authors) - 1]) 
   
@@ -243,13 +248,19 @@ class Database:
             if d.has_key(item):
                 d[item][0] += 1
             else:
-                d[item] = [1,0]
+                d[item] = [1,0,0]
                 
         for item in LastAuthor:
             if d.has_key(item):
                 d[item][1] += 1
             else: 
-                d[item] = [0,1]
+                d[item] = [0,1,0]
+
+        for item in SoleAuthor:
+            if d.has_key(item):
+                d[item][2] += 1
+            else:
+                d[item] = [0,0,1]
         # cc = sorted(d, key=d.get, reverse=(rank=="1"))
         #if author != "":
         for c in d:
