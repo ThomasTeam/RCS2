@@ -14,7 +14,7 @@ class TestDatabase(unittest.TestCase):
         db = database.Database()
         db.read(path.join(self.data_dir, "dblp_curated_sample.xml"))
         #data = db.search_author_by_name("author1")
-        name,d = db.author_stats_by_id("5")
+        name,d = db.author_stats_by_id("819")
         self.assertEqual(name, "Adalberto Zordan")
         counter = 1
         for author in d:
@@ -23,30 +23,36 @@ class TestDatabase(unittest.TestCase):
            conference = d[author][2]
            book = d[author][3]
            bookChapter = d[author][4]
-           if counter == 1: # testing for author overall                     
-               self.assertEqual(overall,1)
-               self.assertEqual(journal,1)
-               self.assertEqual(conference,0)
-               self.assertEqual(book,0)
-               self.assertEqual(bookChapter,0)
-           elif counter == 2: # testing for first author                      
+           if counter == 1: # testing for first author                      
                self.assertEqual(overall,0)
                self.assertEqual(journal,0)
                self.assertEqual(conference,0)
                self.assertEqual(book,0)
                self.assertEqual(bookChapter,0)
-           elif counter == 3: # testing for last author                      
+           elif counter == 2: # testing for last author                      
                self.assertEqual(overall,1)
                self.assertEqual(journal,1)
                self.assertEqual(conference,0)
                self.assertEqual(book,0)
                self.assertEqual(bookChapter,0)
-           elif counter == 4: # testing for sole author                      
+           elif counter == 3: # testing for sole author                      
                self.assertEqual(overall,0)
                self.assertEqual(journal,0)
                self.assertEqual(conference,0)
                self.assertEqual(book,0)
-               self.assertEqual(bookChapter,0)        
+               self.assertEqual(bookChapter,0) 
+           elif counter == 4: # testing for author overall                     
+               self.assertEqual(overall,1)
+               self.assertEqual(journal,1)
+               self.assertEqual(conference,0)
+               self.assertEqual(book,0)
+               self.assertEqual(bookChapter,0)
+           elif counter == 5: # testing for co-authors                      
+               self.assertEqual(overall,4)
+               self.assertEqual(journal,4)
+               self.assertEqual(conference,0)
+               self.assertEqual(book,0)
+               self.assertEqual(bookChapter,0)           
            break
           
         
