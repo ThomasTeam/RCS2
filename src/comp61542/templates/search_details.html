@@ -65,6 +65,12 @@ Number of co-authors {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc
     </tr>
   </thead>
   <tbody>
+    {% if args.data|length == 1 %}
+   		<script>
+   			window.location = "../stats/blah?id={{args.data[0][7]}}"
+   		</script>
+  		<!--<meta http-equiv="Refresh" content="0; url=../stats/blah?id={{args.data[0][7]}}">-->  
+    {% else %}
     {% for entry in args.data %}  
       <tr>
         <td>{{loop.index}}</td>
@@ -77,6 +83,7 @@ Number of co-authors {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc
      	<td align="center">{{ entry[6] }}</td>
       </tr>
     {% endfor %}
+    {% endif %}
   </tbody>
 </table>
 <br/>

@@ -120,13 +120,15 @@ class Database:
             return sorted(sortedData,key = lambda row : row[int(sortValues[0])], reverse= sortValues[1] == "2")
 
     def author_stats_by_id(self, id):
-        dataSearch = self.search_author_by_name("")
+        dataSearch = self.search_author_by_name("","1,1","1")  
+        print dataSearch 
         personal = {"Number of publications":[0,0,0,0,0],"Number of times Sole Author":[0,0,0,0,0],"Number of times First Author":[0,0,0,0,0],"Number of times Last Author":[0,0,0,0,0],"Number of Coauthors":[0,0,0,0,0]}
         searchDetails = [] 
-        for entry in dataSearch: 
+        for entry in dataSearch:  
             if id == str(entry[7]):
                 searchDetails=entry[:]
                 break 
+        print searchDetails
         authorName = searchDetails[0]
         for p in self.publications:
             for au in p.authors:
@@ -155,7 +157,7 @@ class Database:
             result[item][4]=personal[item][3]
             
                            
-        return authorName,result  
+        return authorName,result
  
                 
             
