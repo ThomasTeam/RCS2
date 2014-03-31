@@ -2,9 +2,13 @@
 {% block title %}{{ args.title }}{% endblock %}
 {% block content %}
 <h1>{{ args.title }}</h1>
-
-<br />
-Author: {{args.author}}
+<form>
+GO BACK TO: 
+<a href="../ranking/blah">Ranking Page</a> 
+<a href="../search/by_author">Search Page</a> 
+</form>
+<br 	/>
+Author Name: {{args.author}}
 <br />
 <table border="1">
   <thead>
@@ -18,16 +22,14 @@ Author: {{args.author}}
     </tr>
   </thead>
   <tbody>
-    {% for author in args.data %}  
+    {% for type in args.data.keys() %}  
       <tr>
-      	{% for entry in args.data[author] %}
-     	<td></td>
-     	<td align="center">{{ entry[0] }}</td>
-     	<td align="center">{{ entry[1] }}</td>
-     	<td align="center">{{ entry[2] }}</td>
-     	<td align="center">{{ entry[3] }}</td>
-     	<td align="center">{{ entry[4] }}</td>
-     	{% endfor %}
+     	<td>{{ type }}</td>
+     	<td align="center">{{ args.data[type][0] }}</td>
+     	<td align="center">{{ args.data[type][1] }}</td>
+     	<td align="center">{{ args.data[type][2] }}</td>
+     	<td align="center">{{ args.data[type][3] }}</td>     	
+     	<td align="center">{{ args.data[type][4] }}</td>
       </tr>
      {% endfor %}
   </tbody>

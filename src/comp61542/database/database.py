@@ -106,7 +106,6 @@ class Database:
         for c in cloneData:
             c.append(len(coauthors[self.author_idx.get(c[0])]))
             c.append(self.author_idx.get(c[0]))
-            #print "sss",coauthors[[k for k, v in self.author_idx.iteritems() if v == c[0]][0]]
             #c.append(len(coauthors[[k for k, v in self.author_idx.iteritems() if v == c[0]][0]]))
         
         sortValues = sort.split(",")          
@@ -119,7 +118,42 @@ class Database:
         else:
             sortedData = sorted(cloneData,key = lambda row : row[0].lower())
             return sorted(sortedData,key = lambda row : row[int(sortValues[0])], reverse= sortValues[1] == "2")
-         
+        
+        
+    def author_stats_by_id(self, id):
+        dataSearch = self.search_author_by_name("")
+        personal = {"Overall":[0,0,0,0,0],"Sole Author":[0,0,0,0,0],"First Author":[0,0,0,0,0],"Last Author":[0,0,0,0,0],}
+        searchDetails = [] 
+        for entry in dataSearch: 
+            if id == str(entry[7]):
+                searchDetails=entry[:]
+                break 
+        authorName = searchDetails[0]
+        for p in self.publications:
+            if str(p.authors[0]) == id:
+                if len(p.authors) == 1:
+                    personal["Sole Author"][p.pub_type]+=1
+                else:
+                    personal["First Author"][p.pub_type]+=1
+            elif str(p.authors[len(p.authors) - 1]) == id:
+                personal["Last Author"][p.pub_type]+=1
+        for i in range(0, 3 + 1):
+            personal["Overall"][i]=personal["Sole Author"][i]+personal["First Author"][i]+personal["Last Author"][i]
+        for item in personal:
+            personal[item][4]=personal[item][0]+personal[item][1]+personal[item][2]+personal[item][3]
+       
+        #make the sequence suitable for html page
+        result = {"Overall":[0,0,0,0,0],"Sole Author":[0,0,0,0,0],"First Author":[0,0,0,0,0],"Last Author":[0,0,0,0,0],}
+        for item in personal:
+            result[item][0]=personal[item][4]
+            result[item][1]=personal[item][1]
+            result[item][2]=personal[item][0]
+            result[item][3]=personal[item][2]
+            result[item][4]=personal[item][3]
+        return authorName,result  
+ 
+                
+            
     def get_all_authors(self):  
         return self.author_idx.keys()
 
@@ -276,7 +310,7 @@ class Database:
             else:
                 d[item] = [0,0,1,item]
         # cc = sorted(d, key=d.get, reverse=(rank=="1"))
-        #if author != "":
+        #if author != "": 
         for c in d:
             if not author or author.isspace() or author is None or len(author) == 0:
                 returnResult[self.authors[c].name]= d[c]
@@ -286,7 +320,6 @@ class Database:
            # else:
            #    returnResult[self.authors[c].name]= d[c]
             
-
         rankValues = rank.split(",")
         sorted_x = OrderedDict(sorted(returnResult.items(), key=lambda t:t[0]))
         return OrderedDict(sorted(sorted_x.items(), key=lambda t:t[1][int(rankValues[0])],reverse = rankValues[1] == "2"))
