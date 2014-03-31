@@ -14,7 +14,7 @@ class TestDatabase(unittest.TestCase):
         db = database.Database()
         db.read(path.join(self.data_dir, "dblp_curated_sample.xml"))
         #data = db.search_author_by_name("author1")
-        name,d = db.author_stats_by_id("5")
+        name,d = db.author_stats_by_id("819")
         self.assertEqual(name, "Adalberto Zordan")
         counter = 1
         for author in d:
