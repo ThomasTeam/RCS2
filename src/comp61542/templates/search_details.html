@@ -1,3 +1,8 @@
+{% if args.data|length == 1 %}
+   		<script>
+   			window.location = "../stats/blah?id={{args.data[0][7]}}"
+   		</script>
+{% endif %}
 {% extends "base.html" %}
 {% block title %}{{ args.title }}{% endblock %}
 {% block content %}
@@ -70,7 +75,8 @@ Number of co-authors {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc
    			window.location = "../stats/blah?id={{args.data[0][7]}}"
    		</script>
   		<!--<meta http-equiv="Refresh" content="0; url=../stats/blah?id={{args.data[0][7]}}">-->  
-    {% else %}
+    {% else %} 
+    
     {% for entry in args.data %}  
       <tr>
         <td>{{loop.index}}</td>
@@ -83,7 +89,7 @@ Number of co-authors {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc
      	<td align="center">{{ entry[6] }}</td>
       </tr>
     {% endfor %}
-    {% endif %}
+    {% endif %} 
   </tbody>
 </table>
 <br/>
