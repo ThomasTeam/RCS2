@@ -1,5 +1,6 @@
 from comp61542.statistics import average
 from collections import OrderedDict
+from collections import deque
 import operator
 import itertools
 import numpy as np
@@ -169,29 +170,47 @@ class Database:
                             coauthors[a].add(a2)
                         except KeyError:
                             coauthors[a] = set([a2])
-        newpath = self.find_shortest_path(coauthors, AuthorID1, AuthorID2,[])    
-        print newpath 
+        newpath = self.find_shortest_path(coauthors, AuthorID1, AuthorID2)    
         if newpath==None:
             return "x"
         else:
             return str(len(newpath)-2)
     
     
+    def find_shortest_path(self,graph, start, goal):
+        visited = {start: None}
+        queue = deque([start])
+        while queue:
+            node = queue.popleft()
+            if node == goal:
+                path = []
+                while node is not None:
+                    path.append(node)
+                    node = visited[node]
+                return path[::-1]
+            for neighbour in graph[node]:
+                if neighbour not in visited:
+                    visited[neighbour] = node
+                    queue.append(neighbour)
+        return None
     
-    def find_shortest_path(self, graph, start, end, path=[]):
-        path = path + [start]
-        if start == end:
-            return path
-        if not graph.has_key(start):
-            return None
-        shortest = None
-        for node in graph[start]:
-            if node not in path:
-                newpath = self.find_shortest_path(graph, node, end, path)
-                if newpath: 
-                    if not shortest or len(newpath) < len(shortest):
-                        shortest = newpath
-        return shortest
+#    def find_shortest_path(self, graph, start, end, path=[]):
+#        path = path + [start]
+#        if start == end:
+#            return path
+#        if not graph.has_key(start):
+#            return None
+#        shortest = None
+#        for node in graph[start]:
+#            if shortest==0:
+#                return shortest
+#            if node not in path:
+#                newpath = self.find_shortest_path(graph, node, end, path)
+#                if newpath: 
+#                    if not shortest or len(newpath) < len(shortest):
+#                        shortest = newpath
+#                        
+#        return shortest
     
     
             
