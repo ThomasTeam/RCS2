@@ -374,13 +374,12 @@ class Database:
         header = ("Author", "Number of conference papers",
             "Number of journals", "Number of books",
             "Number of book chapers", "Total")
-
         astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
         for p in self.publications:
             for a in p.authors:
                 astats[a][p.pub_type] += 1
-
-        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
+        
+        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])] #+ [self.authors[i]]
             for i in range(len(astats)) ]
         return (header, data)
 
