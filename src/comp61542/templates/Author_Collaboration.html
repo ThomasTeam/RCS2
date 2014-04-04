@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ args.title }}{% endblock %}
+{% block content %}
+
+<h1>{{ args.title }}</h1>
+<form id="Form1" method="post">
+Distance between <input type="text" id="aid1" name="aid1"/> and <input type="text" id="aid2" name="aid2"/>
+ <input type="submit">=</input> 
+ {% if args.data %}
+  {{args.data}}
+ {% endif %}
+</form>
+{% endblock %}

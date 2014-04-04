@@ -159,7 +159,41 @@ class Database:
                            
         return authorName,result
  
-                
+    def get_author_distance(self,AuthorID1,AuthorID2):
+        coauthors = {}
+        for p in self.publications:
+            for a in p.authors:
+                for a2 in p.authors:
+                    if a != a2:
+                        try:
+                            coauthors[a].add(a2)
+                        except KeyError:
+                            coauthors[a] = set([a2])
+        newpath = self.find_shortest_path(coauthors, AuthorID1, AuthorID2,[])    
+        print newpath 
+        if newpath==None:
+            return "x"
+        else:
+            return str(len(newpath)-2)
+    
+    
+    
+    def find_shortest_path(self, graph, start, end, path=[]):
+        path = path + [start]
+        if start == end:
+            return path
+        if not graph.has_key(start):
+            return None
+        shortest = None
+        for node in graph[start]:
+            if node not in path:
+                newpath = self.find_shortest_path(graph, node, end, path)
+                if newpath: 
+                    if not shortest or len(newpath) < len(shortest):
+                        shortest = newpath
+        return shortest
+    
+    
             
     def get_all_authors(self):  
         return self.author_idx.keys()

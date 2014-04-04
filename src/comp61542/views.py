@@ -95,6 +95,25 @@ def showStatisticsMenu():
     args = {"dataset":dataset}
     return render_template('statistics.html', args=args)
 
+@app.route("/collaboration/<query>")
+def getCollaborationPage(query):
+    dataset = app.config['DATASET']
+    args = {"dataset":dataset, "id":query}
+    args["method"] = "GET"
+    args["title"] = "Authors Collaboration"
+    args["data"] = []
+    return render_template('Author_Collaboration.html', args=args)
+
+@app.route("/collaboration/<query>", methods = ['POST'])
+def postCollaborationPage(query):
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    args = {"dataset":dataset, "id":query}
+    args["method"] = "POST"
+    args["title"] = "Authors Collaboration"
+    args["data"] = db.get_author_distance(int(request.form['aid1']),int(request.form['aid2']))
+    return render_template('Author_Collaboration.html', args=args)
+
 @app.route("/search/<query>")
 def getSearchPage(query):
     
