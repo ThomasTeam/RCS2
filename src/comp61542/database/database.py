@@ -62,7 +62,7 @@ class Database:
                 self.max_year = p.year
 
         return valid
-    
+
     def search_author_by_name(self, author, sort="1,1", namepart="1"):
         (_,data) = self.get_publications_by_author()
         cloneData = data[:]
