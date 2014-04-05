@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 {% block title %}{{ args.title }}{% endblock %}
 {% block content %}
+<ol class="breadcrumb" style="background-color: #fff">
+        <li><a href="/">Home</a></li>
+        <li class="active">{{ args.path }}</li>
+        <li class="active">{{ args.title }}</li>
+    </ol>
 
+    <div class="container-fluid" style="background-color: #fff">
 <h1>{{ args.title }}</h1>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
     {% for column in args.data[0] %}
@@ -36,4 +42,7 @@
   {% endif %}
   </tbody>
 </table>
+</div>
+  <hr>
+     
 {% endblock %}

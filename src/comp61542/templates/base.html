@@ -1,23 +1,87 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <head>
-    <title>{% block title %}{% endblock %}</title>
-  </head>
+    <title>Research Collaborations in the School of Computer Science</title>
 
-  <body>
-    <div id="page">
-      <div id="header">
-        <h1>COMP61542: {{ args.dataset }}</h1>
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/select2.css" rel="stylesheet">
+    <style>
+        .row a{
+            text-decoration: none;
+            color:#000000;
+            display: block;
+        }
+        .row a:hover{
+            text-decoration: none;
+            color:#000000;
+            background-color: #eee;
+        }
+    </style>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-        <div id="navigation">
-          <a href="/">Home</a>
+</head>
+<body style="background-color: #f5f5f5">
+<div class="container" >
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">RSC2</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Authors <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/search/author">Search for Author</a></li>
+                            <li><a href="/ranking">Ranking Authors</a></li>
+                            <li><a href="/statisticsdetails/author_year">Author by Year</a></li>
+                            <li><a href="/coauthors">Coauthors</a></li>
+                            <li><a href="/collaboration">Authors Collaboration</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Publications <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/statisticsdetails/publication_summary">Publication Summary</a></li>
+                            <li><a href="/statisticsdetails/publication_author">Publication by Author</a></li>
+                            <li><a href="/statisticsdetails/publication_year">Publication by Year</a></li>
+                            <li><a href="/averages">Averaged Year Data</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
-
-      <div id="content">
-        {% block content %}{% endblock %}
-      </div>
+    </nav>
+    <div class="jumbotron" style="background-color:#5f5f5f; color:#fff; margin-top:75px; clear: both;">
+        <h1>Research Collaborations in the School of Computer Science</h1>
     </div>
-  </body>
+    
+
+        {% block content %}{% endblock %}
+    
+</div>
+<script src="../static/js/jquery-1.11.0.min.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+
+{% block script %}{% endblock %}
+</body>
 </html>

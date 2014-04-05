@@ -1,13 +1,44 @@
 {% extends "base.html" %}
 {% block title %}{{ args.title }}{% endblock %}
 {% block content %}
+<ol class="breadcrumb" style="background-color: #fff">
+        <li><a href="/">Home</a></li>
+        <li class="active">{{ args.path }}</li>
+        <li class="active">{{ args.title }}</li>
+    </ol>
 
+    <div class="container-fluid" style="background-color: #fff">
 <h1>{{ args.title }}</h1>
 <form id="Form1" method="post">
-Distance between <input type="text" id="aid1" name="aid1"/> and <input type="text" id="aid2" name="aid2"/>
+Distance between <select id="aid1" name="aid1" style="width:250px">
+{% for key, value in args.authors.iteritems() %}
+
+<option value="{{value}}">{{key}}</option>
+
+{% endfor %}
+</select> and <select id="aid2" name="aid2" style="width:250px">
+{% for key, value in args.authors.iteritems() %}
+
+<option value="{{value}}">{{key}}</option>
+
+{% endfor %}
+</select>
  <input type="submit">=</input> 
  {% if args.data %}
   {{args.data}}
  {% endif %}
 </form>
+</div>
+  <hr>
+{% endblock %}
+{% block script %}
+<script src="../static/js/select2.js"></script>
+<script>
+$(document).ready(function() { 
+	$("#aid1").select2();
+	$("#aid1").select2("val", {{args.aid1}});
+	$("#aid2").select2();
+	  $("#aid2").select2("val", "{{args.aid2}}"); 
+});
+</script>
 {% endblock %}

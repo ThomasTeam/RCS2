@@ -6,6 +6,13 @@
 {% extends "base.html" %}
 {% block title %}{{ args.title }}{% endblock %}
 {% block content %}
+<ol class="breadcrumb" style="background-color: #fff">
+        <li><a href="/">Home</a></li>
+        <li class="active">{{ args.path }}</li>
+        <li class="active">{{ args.title }}</li>
+    </ol>
+
+    <div class="container-fluid" style="background-color: #fff">
 <h1>{{ args.title }}</h1>
 <form id="Form1" method="post">
 Enter the name of the AUTHOR : <input type="text" id="search" name="search"/> 
@@ -56,7 +63,7 @@ Number of co-authors {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc
 
 <br />
 <br />
-<table border="1">
+<table  class="table table-striped">
   <thead>
     <tr>
         <th>#</th>
@@ -103,7 +110,8 @@ Number of co-authors {% if args.sort.split(',')[1] == "1" %} Asc {% else %} Desc
 
 
 {% endif %}
-
+</div>
+  <hr>
 <script>
 	function sort(type){
 		document.getElementById("search").value = document.getElementById("searchtext").value;

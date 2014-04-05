@@ -1,24 +1,29 @@
 {% extends "base.html" %}
-{% block title %}{{ args.title }}{% endblock %}
+{% block title %}
+	{{ args.title }}
+{% endblock %}
 {% block content %}
+<ol class="breadcrumb" style="background-color: #fff">
+        <li><a href="/">Home</a></li>
+        <li class="active">{{ args.path }}</li>
+        <li class="active">{{ args.title }}</li>
+    </ol>
+
+    <div class="container-fluid" style="background-color: #fff">
 <h1>{{ args.title }}</h1>
-<form>
-GO BACK TO: 
-<a href="../ranking/blah">Ranking Page</a> 
-<a href="../search/by_author">Search Page</a> 
-</form>
-<br 	/>
-Author Name: {{args.author}}
+
+
+<h3>Author Name: {{args.author}}</h3>
 <br />
-<table border="1">
+<table   class="table table-striped">
   <thead>
     <tr>
     	<th style="width: 150px;"></th>
-    	<th style="width: 150px;">Overall </th>
-        <th style="width: 150px;">Journal Articles </th>
-        <th style="width: 150px;">Conference Papers </th>
-        <th style="width: 150px;">Books </th>
-        <th style="width: 150px;">Book Chapters </th>
+    	<th style="text-align:center" >Overall </th>
+        <th style="text-align:center" >Journal Articles </th>
+        <th style="text-align:center" >Conference Papers </th>
+        <th style="text-align:center" >Books </th>
+        <th style="text-align:center">Book Chapters </th>
     </tr>
   </thead>
   <tbody>
@@ -43,7 +48,8 @@ Author Name: {{args.author}}
 <input type="hidden" id="nametext" value="{{args.name}}"/>
 
 	
-
+</div>
+  <hr>
 <script>
 	function sort(type){
 		document.getElementById("search").value = document.getElementById("searchtext").value;

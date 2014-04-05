@@ -148,7 +148,7 @@ class Database:
                 personal["Number of times Last Author"][p.pub_type]+=1
         for item in personal:
             personal[item][4]=personal[item][0]+personal[item][1]+personal[item][2]+personal[item][3]
-         #make the sequence suitable for html page
+        #make the sequence suitable for html page
         result = {"Number of publications":[0,0,0,0,0],"Number of times Sole Author":[0,0,0,0,0],"Number of times First Author":[0,0,0,0,0],"Number of times Last Author":[0,0,0,0,0],"Number of Coauthors":[0,0,0,0,0]}
         for item in personal:
             result[item][0]=personal[item][4]
@@ -162,6 +162,10 @@ class Database:
  
     def get_author_distance(self,AuthorID1,AuthorID2):
         coauthors = {}
+        #numberOfAuthors=[]
+        #numberOfAuthors=self.search_author_by_name("")
+        #if AuthorID1>len(numberOfAuthors) or AuthorID2>len(numberOfAuthors) or AuthorID1<0 or AuthorID2<0:
+        #    return "Author Not Found"
         for p in self.publications:
             for a in p.authors:
                 for a2 in p.authors:
@@ -172,7 +176,7 @@ class Database:
                             coauthors[a] = set([a2])
         newpath = self.find_shortest_path(coauthors, AuthorID1, AuthorID2)    
         if newpath==None:
-            return "x"
+            return "X"
         else:
             return str(len(newpath)-2)
     

@@ -1,6 +1,6 @@
 from comp61542 import app
 from database import database
-from flask import (render_template, request)
+from flask import (render_template, request, url_for, redirect)
 
 def format_data(data):
     fmt = "%.2f"
@@ -14,13 +14,10 @@ def format_data(data):
 
 @app.route('/')
 def root():
-    return app.send_static_file('index.html')
+    print url_for('static', filename='home.html')
+    return redirect(url_for('static', filename='home.html')) #app.send_static_file('home.html')
 
-import os
-@app.route('/js/<path:path>')
-def static_proxy(path):
-    # send_static_file will guess the correct MIME type
-    return app.send_static_file(os.path.join('js', path))
+
 
 @app.route("/averages")
 def showAverages():
@@ -28,6 +25,7 @@ def showAverages():
     db = app.config['DATABASE']
     args = {"dataset":dataset, "id":"averages"}
     args['title'] = "Averaged Data"
+    args['path'] = "Publication"
     tables = []
     headers = ["Average", "Conference Paper", "Journal", "Book", "Book Chapter", "All Publications"]
     averages = [ database.Stat.MEAN, database.Stat.MEDIAN, database.Stat.MODE ]
@@ -72,10 +70,11 @@ def showAverages():
 def showCoAuthors():
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
+    
     PUB_TYPES = ["Conference Papers", "Journals", "Books", "Book Chapters", "All Publications"]
     args = {"dataset":dataset, "id":"coauthors"}
     args["title"] = "Co-Authors"
-
+    args['path'] = "Author"
     start_year = db.min_year
     if "start_year" in request.args:
         start_year = int(request.args.get("start_year"))
@@ -105,63 +104,74 @@ def showCoAuthors():
 #    args = {"dataset":dataset}
 #    return render_template('statistics.html', args=args)
 
-@app.route("/collaboration/<query>")
-def getCollaborationPage(query):
-    dataset = app.config['DATASET']
-    args = {"dataset":dataset, "id":query}
-    args["method"] = "GET"
-    args["title"] = "Authors Collaboration"
-    args["data"] = []
-    return render_template('Author_Collaboration.html', args=args)
-
-@app.route("/collaboration/<query>", methods = ['POST'])
-def postCollaborationPage(query):
+@app.route("/collaboration")
+def getCollaborationPage():
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
-    args = {"dataset":dataset, "id":query}
+    args = {"dataset":dataset}
+    args["method"] = "GET"
+    args["title"] = "Authors Collaboration"
+    args['path'] = "Author"
+    args["data"] = []
+    args["authors"] = db.author_idx
+    args["aid1"] = 0
+    args["aid2"] = 0
+    return render_template('Author_Collaboration.html', args=args)
+
+@app.route("/collaboration", methods = ['POST'])
+def postCollaborationPage():
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    args = {"dataset":dataset}
     args["method"] = "POST"
     args["title"] = "Authors Collaboration"
+    args['path'] = "Author"
+    args["authors"] = db.author_idx
+    args["aid1"] = request.form['aid1']
+    args["aid2"] = request.form['aid2']
     args["data"] = db.get_author_distance(int(request.form['aid1']),int(request.form['aid2']))
     return render_template('Author_Collaboration.html', args=args)
 
-@app.route("/search/<query>")
-def getSearchPage(query):
+@app.route("/search/author")
+def getSearchPage():
     
     dataset = app.config['DATASET']
-    args = {"dataset":dataset, "id":query}
+    args = {"dataset":dataset}
     args["method"] = "GET"
-    if query == "by_author":
-        args["title"] = "Search author by name"
+    args['path'] = "Author"
+    args["title"] = "Search author by name"
     return render_template('search_details.html', args=args)  
 
-@app.route("/search/<query>", methods = ['POST'])
-def postSearchPage(query):
+@app.route("/search/author", methods = ['POST'])
+def postSearchPage():
     
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
-    args = {"dataset":dataset, "id":query, "search":request.form['search'],"sort":request.form['sort'], "name":request.form['name']}
+    args = {"dataset":dataset, "search":request.form['search'],"sort":request.form['sort'], "name":request.form['name']}
     args["method"] = "POST"
-    if query == "by_author":
-        args["title"] = "Search by author name"
-        args["data"] = db.search_author_by_name(request.form['search'],request.form['sort'], request.form['name'])
+    args['path'] = "Author"
+    args["title"] = "Search by author name"
+    args["data"] = db.search_author_by_name(request.form['search'],request.form['sort'], request.form['name'])
     return render_template('search_details.html', args=args)     
 
-@app.route("/ranking/<query>")
-def rankingAuthors(query):
+@app.route("/ranking")
+def rankingAuthors():
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
-    args = {"dataset":dataset, "id":query, "sort":"0,2", "query":"", "publication":"0"}
+    args = {"dataset":dataset, "sort":"0,2", "query":"", "publication":"0"}
     args["title"] = "Author Ranking"
+    args['path'] = "Author"
     args["header"] = ["Author", "First Author", "Last Author"]
     args["data"] = db.rank_author_by_contribution( )  #first or manager
     return render_template('author_ranking.html', args=args)  
 
-@app.route("/ranking/<query>", methods = ['POST'])
-def poatRankingAuthors(query):
+@app.route("/ranking", methods = ['POST'])
+def poatRankingAuthors():
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
-    args = {"dataset":dataset, "id":query, "query":request.form["search"], "publication":request.form["pub"]}
+    args = {"dataset":dataset, "query":request.form["search"], "publication":request.form["pub"]}
     args["title"] = "Author Ranking"
+    args['path'] = "Author"
     args["header"] = ["Author", "First Author", "Last Author"]
     args["data"] = db.rank_author_by_contribution(request.form["search"],request.form["sort"],request.form["pub"])
     #first or manager
@@ -175,18 +185,22 @@ def showPublicationSummary(status):
     args = {"dataset":dataset, "id":status}
 
     if (status == "publication_summary"):
+        args["path"] = "Publication"
         args["title"] = "Publication Summary"
         args["data"] = db.get_publication_summary()
 
     if (status == "publication_author"):
+        args["path"] = "Publication"
         args["title"] = "Author Publication"
         args["data"] = db.get_publications_by_author()
 
     if (status == "publication_year"):
+        args["path"] = "Publication"
         args["title"] = "Publication by Year"
         args["data"] = db.get_publications_by_year()
 
     if (status == "author_year"):
+        args["path"] = "Author"
         args["title"] = "Author by Year"
         args["data"] = db.get_author_totals_by_year()
 
@@ -198,5 +212,6 @@ def individualAuthorStats(query):
     db = app.config['DATABASE']
     args = {"dataset":dataset, "id":query}
     args["title"] = "Inidividual Details"
+    args["path"] = "Author"
     args["author"],args["data"] = db.author_stats_by_id(request.args.get("id"))  
     return render_template('individual_details.html', args=args)  
