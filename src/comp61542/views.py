@@ -12,6 +12,16 @@ def format_data(data):
             result.append((fmt % item).rstrip('0').rstrip('.'))
     return result
 
+@app.route('/')
+def root():
+    return app.send_static_file('index.html')
+
+import os
+@app.route('/js/<path:path>')
+def static_proxy(path):
+    # send_static_file will guess the correct MIME type
+    return app.send_static_file(os.path.join('js', path))
+
 @app.route("/averages")
 def showAverages():
     dataset = app.config['DATASET']
@@ -89,11 +99,11 @@ def showCoAuthors():
     args["pub_str"] = PUB_TYPES[pub_type]
     return render_template("coauthors.html", args=args)
 
-@app.route("/")
-def showStatisticsMenu():
-    dataset = app.config['DATASET']
-    args = {"dataset":dataset}
-    return render_template('statistics.html', args=args)
+#@app.route("/")
+#def showStatisticsMenu():
+#    dataset = app.config['DATASET']
+#    args = {"dataset":dataset}
+#    return render_template('statistics.html', args=args)
 
 @app.route("/collaboration/<query>")
 def getCollaborationPage(query):
