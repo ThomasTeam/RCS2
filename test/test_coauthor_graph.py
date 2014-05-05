@@ -11,34 +11,29 @@ class TestDatabase(unittest.TestCase):
         self.data_dir = path.join(dir, "..", "data")
         #0153462 : ABCDEFG
         
-    def test_get_author_distance_AB(self):
+    def test_get_coauthor_graph_A(self):
         db = database.Database()
         db.read(path.join(self.data_dir, "dblp_distance_graph.xml"))
         #data = db.search_author_by_name("author1")
-        d = db.get_author_distance("A","B")# A => B
+        d = db.get_author_coauthors("A")# A => B
        # print [p for p in db.get_author_distance(0,1)]
-        self.assertEqual(d,[["A","B"]])
+        self.assertEqual(d,["A","B","G","D","E"])
           
-    def test_get_author_distance_CD(self):
+    def test_get_coauthor_graph_C(self):
         db = database.Database()
         db.read(path.join(self.data_dir, "dblp_distance_graph.xml"))
         #data = db.search_author_by_name("author1")
-        d = db.get_author_distance("C","D")# C => B => D & C => G => D
-        self.assertEqual(d,[["C","B","D"],["C","G","D"]])
+        d = db.get_author_coauthors("C")# C => B => D & C => G => D
+        self.assertEqual(d,["C","B","G"])
 
           
-    def test_get_author_distance_CE(self):
+    def test_get_coauthor_graph_F(self):
         db = database.Database()
         db.read(path.join(self.data_dir, "dblp_distance_graph.xml"))
         #data = db.search_author_by_name("author1")
-        d = db.get_author_distance("C","E")# C => B => A => E & C => G => A =>E
-        self.assertEqual(d,[["C","B","A","E"],["C","G","A","E"]])    
+        d = db.get_author_coauthors("F")# C => B => A => E & C => G => A =>E
+        self.assertEqual(d,["F"])    
            
-    def test_get_author_distance_AF(self):
-        db = database.Database()
-        db.read(path.join(self.data_dir, "dblp_distance_graph.xml"))
-        #data = db.search_author_by_name("author1")
-        d = db.get_author_distance("A","F")# X
-        self.assertEqual(d,[])  
+
 if __name__ == '__main__':
     unittest.main()

@@ -4,6 +4,7 @@ from collections import deque
 import operator
 import itertools
 import numpy as np
+import networkx as nx
 from xml.sax import handler, make_parser, SAXException
 
 PublicationType = [
@@ -162,6 +163,7 @@ class Database:
  
     def get_author_distance(self,AuthorID1,AuthorID2):
         coauthors = {}
+        G=nx.Graph()
         #numberOfAuthors=[]
         #numberOfAuthors=self.search_author_by_name("")
         #if AuthorID1>len(numberOfAuthors) or AuthorID2>len(numberOfAuthors) or AuthorID1<0 or AuthorID2<0:
@@ -170,15 +172,22 @@ class Database:
             for a in p.authors:
                 for a2 in p.authors:
                     if a != a2:
-                        try:
-                            coauthors[a].add(a2)
-                        except KeyError:
-                            coauthors[a] = set([a2])
-        newpath = self.find_shortest_path(coauthors, AuthorID1, AuthorID2)    
-        if newpath==None:
-            return "X"
-        else:
-            return str(len(newpath)-2)
+                        #try:
+                        #    coauthors[a].add(a2)
+                        #except KeyError:
+                        #    coauthors[a] = set([a2])
+                        G.add_edge(self.authors[a].name,self.authors[a2].name)
+     #   newpath = self.find_shortest_path(coauthors, AuthorID1, AuthorID2)
+        newpaths = nx.all_shortest_paths(G, source=AuthorID1, target=AuthorID2)
+        #print [p for p in nx.all_shortest_paths(G, source=AuthorID1, target=AuthorID2)]
+        #if newpaths==None: 
+        #    return []  
+        #else:
+        #    return newpaths
+        try: 
+            return [p for p in newpaths]
+        except :
+            return []
     
     
     def find_shortest_path(self,graph, start, goal):
@@ -217,7 +226,18 @@ class Database:
 #        return shortest
     
     
-            
+    def get_author_coauthors(self, AuthorID):
+        coauthor=[]
+        coauthor.append(AuthorID)
+        for p in self.publications:
+            for a in p.authors:
+                if self.authors[a].name==AuthorID:
+                    for a2 in p.authors:
+                        if a != a2:
+                            if self.authors[a2].name not in coauthor:
+                                coauthor.append(self.authors[a2].name) 
+        return coauthor
+        
     def get_all_authors(self):  
         return self.author_idx.keys()
 

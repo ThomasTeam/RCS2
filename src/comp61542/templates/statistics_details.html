@@ -42,7 +42,168 @@
   {% endif %}
   </tbody>
 </table>
+<div id="chartContainer" style="height: 300px; width: 100%;">
+	</div>
 </div>
   <hr>
      
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript" src="../static/js/canvasjs.min.js"></script>
+
+<script>
+$(document).ready(function() {   
+	data = {{ args.data[1]|safe}}
+	names = [{% for column in args.data[0] %}"{{ column|safe }}",{% endfor %}]
+	
+	
+	{% if args["title"] == "Publication Summary" %}
+		datapoints = [[],[]];
+		for (i = 0; i < data.length; i++){
+			for (j = 1; j < data[i].length; j++){
+				datapoints[i].push({"label":names[j],"y":data[i][j]});
+			}
+		}
+		var chart = new CanvasJS.Chart("chartContainer",
+			{
+				theme: "theme3",
+				/*title:{
+					text: "Publication Summary",
+					fontSize: 30
+				},*/
+				toolTip: {
+					shared: true
+				},
+				axisX:{
+					title: "Publication Summary"
+				},
+	
+				axisY: {
+					title: "Publications"
+				},
+				axisY2: {
+					title: "Authors"
+				},
+	
+				legend:{
+					verticalAlign: "top",
+					horizontalAlign: "center"
+				},
+				data: [ 
+				{
+					type: "column",	
+					name: "Number of publications",
+					legendText: "Number of publications",
+					showInLegend: true, 
+					dataPoints:datapoints[0]
+				},
+				{
+					type: "column",	
+					name: "Number of authors",
+					legendText: "Number of authors",
+					axisYType: "secondary",
+					showInLegend: true,
+					dataPoints:datapoints[1]
+				}
+				
+				],
+	          legend:{
+	            cursor:"pointer",
+	            itemclick: function(e){
+	              if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+	              	e.dataSeries.visible = false;
+	              }
+	              else {
+	                e.dataSeries.visible = true;
+	              }
+	            	chart.render();
+	            }
+	          },
+	        });
+	{% elif args["title"] == "Publication by Year" %}
+		datapoints = [[],[],[],[]];
+		for (i = 0; i < datapoints.length; i++){
+			for (j = 0; j < data.length; j++){
+				datapoints[i].push({"y":data[j][i+1],"x":new Date(data[j][0],0)});
+			}
+		}
+		
+		var chart = new CanvasJS.Chart("chartContainer",
+    {
+      /*title:{
+        text: "Google's Consolidated Quarterly Revenues",
+        fontFamily: "arial black",
+        fontColor: "#695A42"
+
+      },*/
+      toolTip: {
+        shared: true,
+        content: function(e){
+          var str = '';
+          var total = 0 ;
+          var str3;
+          var str2 ;
+          for (var i = 0; i < e.entries.length; i++){
+            var  str1 = "<span style= 'color:"+e.entries[i].dataSeries.color + "'> " + e.entries[i].dataSeries.name + "</span>: <strong>"+  e.entries[i].dataPoint.y + "</strong>  pub<br/>" ; 
+            total = e.entries[i].dataPoint.y + total;
+            str = str.concat(str1);
+          }
+          str2 = "<span style = 'color:DodgerBlue; '><strong>"+ (e.entries[0].dataPoint.x).getFullYear() + "</strong></span><br/>";
+          total = Math.round(total*100)/100 
+          str3 = "<span style = 'color:Tomato '>Total: </span><strong>" + total + "</strong> pub/yr<br/>";
+          
+          return (str2.concat(str)).concat(str3);
+        }
+      },
+      axisY:{
+        valueFormatString:"#0pub", 
+        
+        gridColor: "#B6B1A8",
+        tickColor: "#B6B1A8",
+        interlacedColor: "rgba(182,177,168,0.2)"
+
+      },
+      axisX: {
+        interval: 1,
+        intervalType: "year",
+        valueFormatString: "YY" 
+      },
+      data: [
+      {        
+       type: "stackedColumn",       
+       showInLegend:true,
+       color: "#696661",
+       name:"conferencePapers",
+       dataPoints: datapoints[0]
+     },
+     {        
+       type: "stackedColumn",       
+       showInLegend:true,
+       name:"journals",
+       color: "#EDCA93",
+       dataPoints: datapoints[1]
+     },
+     {        
+       type: "stackedColumn",       
+       showInLegend:true,
+       name:"books",
+       color:"#695A42",
+       dataPoints: datapoints[2]
+     },
+     {        
+       type: "stackedColumn",       
+       showInLegend:true,
+       name:"bookChapers",
+       color:"#B6B1A8",
+       dataPoints: datapoints[3]
+     }
+     ]
+   });
+	{% endif %}
+	chart.render();
+	
+});
+</script>
 {% endblock %}

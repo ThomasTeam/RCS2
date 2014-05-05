@@ -1,0 +1,60 @@
+<dblp>
+<article mdate="2007-12-19" key="journals/debu/Halevy01">
+    <author>A</author>
+    <author>B</author>
+    <author>G</author>
+    <author>D</author>
+    <title>Letter from the Special Issue Editor.</title>
+    <pages>2</pages>
+    <year>2001</year>
+    <ee>http://sites.computer.org/debull/A01JUN-CD.pdf</ee>
+    <volume>24</volume>
+    <journal>IEEE Data Eng. Bull.</journal>
+    <number>2</number>
+    <url>http://www.informatik.uni-trier.de/~ley/db/journals/debu/debu24.html#Halevy01</url>
+</article>
+<incollection mdate="2004-03-30" key="books/sp/staabS2004/DoanMDH04">
+    <author>A</author>
+    <author>E</author>
+    <title>Ontology Matching: A Machine Learning Approach.</title>
+    <pages>385-404</pages>
+    <crossref>books/sp/StaabS04</crossref>
+    <year>2004</year>
+    <booktitle>Handbook on Ontologies</booktitle>
+    <url>http://www.informatik.uni-trier.de/~ley/db/books/collections/StaabS2004.html#DoanMDH04</url>
+</incollection>
+<inproceedings mdate="2012-12-11" key="conf/aaai/MadhavanBDH02">
+    <author>C</author>
+    <author>B</author>
+    <title>Representing and Reasoning about Mappings between Domain Models.</title>
+    <pages>80-86</pages>
+    <year>2002</year>
+    <crossref>conf/aaai/2002</crossref>
+    <booktitle>AAAI/IAAI</booktitle>
+    <url>http://www.informatik.uni-trier.de/~ley/db/conf/aaai/aaai2002.html#MadhavanBDH02</url>
+    <ee>http://www.aaai.org/Library/AAAI/2002/aaai02-013.php</ee>
+</inproceedings>
+<article mdate="2011-05-26" key="journals/ml/DoanDH03">
+    <author>C</author>
+    <author>G</author>
+    <title>Learning to Match the Schemas of Data Sources: A Multistrategy Approach.</title>
+    <pages>279-301</pages>
+    <year>2003</year>
+    <volume>50</volume>
+    <journal>Machine Learning</journal>
+    <number>3</number>
+    <url>http://www.informatik.uni-trier.de/~ley/db/journals/ml/ml50.html#DoanDH03</url>
+    <ee>http://dx.doi.org/10.1023/A:1021765902788</ee>
+</article>
+<article mdate="2006-03-16" key="journals/queue/Halevy05">
+    <author>F</author>
+    <title>Why your data won't mix.</title>
+    <pages>50-58</pages>
+    <year>2005</year>
+    <volume>3</volume>
+    <journal>ACM Queue</journal>
+    <number>8</number>
+    <ee>http://doi.acm.org/10.1145/1103822.1103836</ee>
+    <url>http://www.informatik.uni-trier.de/~ley/db/journals/queue/queue3.html#Halevy05</url>
+</article>
+</dblp>

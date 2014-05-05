@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}{{ args.title }}{% endblock %}
+{% block content %}
+<ol class="breadcrumb" style="background-color: #fff">
+        <li><a href="/">Home</a></li>
+        <li class="active">{{ args.path }}</li>
+        <li class="active">{{ args.title }}</li>
+    </ol>
+
+    <div class="container-fluid" style="background-color: #fff">
+<h1>{{ args.title }}</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+    {% for column in args.data[0] %}
+      <th>{{ column }}</th>
+    {% endfor %}
+    </tr>
+  </thead>
+
+  <tbody>
+  {% if args.title=="Author Publication" %}
+    {% for row in args.data[1] %}
+    <tr>
+    	<td><a href="../stats/blah?id={{loop.index-1}}">{{ row[0] }}</a></td>
+    	<td>{{ row[1] }}</td>
+    	<td>{{ row[2] }}</td>
+    	<td>{{ row[3] }}</td>
+    	<td>{{ row[4] }}</td>
+    	<td>{{ row[5] }}</td>
+    </tr>
+  {% endfor %}
+  {% else %}
+  {% for row in args.data[1] %}
+    <tr>
+    {% for data_item in row %}
+      <td>{{ data_item }}</td>
+    {% endfor %}
+    </tr>
+  {% endfor %}
+  {% endif %}
+  </tbody>
+</table>
+</div>
+  <hr>
+     
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript" src="../static/js/canvasjs.min.js"></script>
+
+<script>
+$(document).ready(function() {   
+	data = {{ args.data[1]|safe}}
+	names = {{args.data[0]|safe}}
+	
+	/*datapoints = [[],[]];
+	for (i = 0; i < data.length; i++){
+		for (j = 1; j < data[i].length; j++){
+			datapoints[i].push({"label":names[j-1],"y":data[i][j]});
+		}
+	}*/
+	
+	/*var chart = new CanvasJS.Chart("chartContainer",
+		{
+			theme: "theme3",
+			title:{
+				text: "Crude Oil Reserves Vs Production, 2011",
+				fontSize: 30
+			},
+			toolTip: {
+				shared: true
+			},
+			axisX:{
+				title: "Publication Summery"
+			},
+
+			axisY: {
+				title: "Number of publications"
+			},
+			axisY2: {
+				title: "Number of authors"
+			},
+
+			legend:{
+				verticalAlign: "top",
+				horizontalAlign: "center"
+			},
+			data: [ 
+			{
+				type: "column",	
+				name: "Number of publications",
+				legendText: "Number of publications",
+				showInLegend: true, 
+				dataPoints:datapoints[0]
+			},
+			{
+				type: "column",	
+				name: "Oil Production (million/day)",
+				legendText: "Oil Production",
+				axisYType: "secondary",
+				showInLegend: true,
+				dataPoints:datapoints[1]
+			}
+			
+			],
+          legend:{
+            cursor:"pointer",
+            itemclick: function(e){
+              if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+              	e.dataSeries.visible = false;
+              }
+              else {
+                e.dataSeries.visible = true;
+              }
+            	chart.render();
+            }
+          },
+        });
+
+	chart.render();
+	}*/
+});
+</script>
+{% endblock %}

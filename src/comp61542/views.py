@@ -1,6 +1,7 @@
 from comp61542 import app
 from database import database
 from flask import (render_template, request, url_for, redirect)
+import json
 
 def format_data(data):
     fmt = "%.2f"
@@ -113,9 +114,10 @@ def getCollaborationPage():
     args["title"] = "Authors Collaboration"
     args['path'] = "Author"
     args["data"] = []
+    args["data_length"] = "X"
     args["authors"] = db.author_idx
-    args["aid1"] = 0
-    args["aid2"] = 0
+    args["aid1"] = ""
+    args["aid2"] = ""
     return render_template('Author_Collaboration.html', args=args)
 
 @app.route("/collaboration", methods = ['POST'])
@@ -123,17 +125,27 @@ def postCollaborationPage():
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
     args = {"dataset":dataset}
-    args["method"] = "POST"
+    args["method"] = "POST" 
     args["title"] = "Authors Collaboration"
     args['path'] = "Author"
     args["authors"] = db.author_idx
     args["aid1"] = request.form['aid1']
     args["aid2"] = request.form['aid2']
-    args["data"] = db.get_author_distance(int(request.form['aid1']),int(request.form['aid2']))
+    if request.form['aid2'] == "none" or request.form['aid1'] == request.form['aid2']:
+        args["data"] = db.get_author_coauthors(request.form['aid1'])
+        args["json_data"] = json.dumps(args["data"])
+    else:
+        args["data"] = db.get_author_distance(request.form['aid1'],request.form['aid2'])
+        args["json_data"] = json.dumps(args["data"])
+    print args["json_data"]
+    try: 
+        args["data_length"]=len(args["data"][0])-2
+    except:
+        args["data_length"]="X"
     return render_template('Author_Collaboration.html', args=args)
 
 @app.route("/search/author")
-def getSearchPage():
+def getSearchPage(): 
     
     dataset = app.config['DATASET']
     args = {"dataset":dataset}
